@@ -4,14 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-// Grading interface
-interface Grading {
-    String computeGrade(int totalMarks);
-}
 
-// Student class implementing Grading interface
-class Student implements Grading {
-    @Override
+class Student{ 
     public String computeGrade(int totalMarks) {
         // Compute the grade based on total marks
         if (totalMarks >= 90 && totalMarks <= 100) {
@@ -35,7 +29,7 @@ class Student implements Grading {
 // GUI class extending JFrame
 class GUI extends JFrame {
     private JTextField ia1Field, ia2Field, ia3Field, ctaField, seeField;
-    private JLabel totalMarksLabel, gradeLabel;
+    private JLabel totalMarksLabel, gradeLabel,detained,totalMarksLabel2,gradeLabel1;
     private JButton calculateButton, resetButton;
 
     public GUI() {
@@ -58,21 +52,21 @@ class GUI extends JFrame {
             }
         };
         panel.setLayout(new GridBagLayout());
-
+        
         GridBagConstraints constraints = new GridBagConstraints();
-
+        
         constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.anchor = GridBagConstraints.NORTH;
-        constraints.insets = new Insets(10, 0, 10, 0);
+        constraints.insets = new Insets(10,0,10, 0);
 
-        // Load and resize the logo image
+        // College LOGO 
         ImageIcon logoIcon = new ImageIcon(getClass().getResource("new-logo.png"));
         Image logoImage = logoIcon.getImage().getScaledInstance(300, 100, Image.SCALE_SMOOTH);
         JLabel logoLabel = new JLabel(new ImageIcon(logoImage));
         panel.add(logoLabel, constraints);
 
-        constraints.gridwidth = 2;
+        constraints.gridwidth = 0;
         constraints.gridy++;
         constraints.anchor = GridBagConstraints.CENTER;
         JLabel titleLabel = new JLabel("GRADE CALCULATOR");
@@ -87,7 +81,7 @@ class GUI extends JFrame {
 
         constraints.gridx++;
         ia1Field = new JTextField(10);
-        ia1Field.setPreferredSize(new Dimension(150, 25));
+//        ia1Field.setPreferredSize(new Dimension(150, 20));
         panel.add(ia1Field, constraints);
 
         constraints.gridy++;
@@ -147,16 +141,37 @@ class GUI extends JFrame {
         panel.add(resetButton, constraints);
 
         // Label to display total marks
-        constraints.gridy++;
-        totalMarksLabel = new JLabel("Total Marks: ");
-        panel.add(totalMarksLabel, constraints);
 
+        constraints.gridy++;
+         
+        totalMarksLabel2 = new JLabel("Total Marks: "); 
+        panel.add(totalMarksLabel2, constraints); 
+        constraints.gridx++;
+        totalMarksLabel = new JLabel(); 
+        panel.add(totalMarksLabel, constraints); 
         // Label to display grade
-        constraints.gridy++;
-        gradeLabel = new JLabel("Grade: ");
-        panel.add(gradeLabel, constraints);
-
+        constraints.gridy++; 
+        constraints.gridx =0;
+        gradeLabel1 = new JLabel("Grade: "); 
+        panel.add(gradeLabel1, constraints); 
+        
+        constraints.gridx++;        
+        gradeLabel = new JLabel(); 
+        panel.add(gradeLabel, constraints); 
+       
+        
+        constraints.gridy++; 
+        constraints.gridx =0;
+        detained = new JLabel(); 
+        panel.add(detained, constraints); 
         add(panel);
+        
+        
+        
+        
+        
+        
+        
     }
 
     // Calculate the grade based on entered marks
@@ -167,7 +182,7 @@ class GUI extends JFrame {
             int ia3 = Integer.parseInt(ia3Field.getText());
             int cta = Integer.parseInt(ctaField.getText());
             int see = Integer.parseInt(seeField.getText());
-
+            detained.setText(null);
             // Validate the entered marks
             if (ia1 < 0 || ia1 > 20 || ia2 < 0 || ia2 > 20 || ia3 < 0 || ia3 > 20 || cta < 0 || cta > 10 || see < 0 || see > 100) {
                 throw new IllegalArgumentException("Invalid marks entered!");
@@ -178,11 +193,12 @@ class GUI extends JFrame {
 
             // Check if student is detained from SEE
             if (cie < 20) {
-                totalMarksLabel.setText("Student is detained from taking SEE");
-                totalMarksLabel.setFont(totalMarksLabel.getFont().deriveFont(18f)); // Increase font size
-                totalMarksLabel.setFont(totalMarksLabel.getFont().deriveFont(Font.BOLD)); // Set font style to bold
-                totalMarksLabel.setForeground(Color.RED);
-
+                detained.setText("Student is detained from taking SEE");
+                detained.setFont(detained.getFont().deriveFont(18f)); // Increase font size
+                detained.setFont(detained.getFont().deriveFont(Font.BOLD)); // Set font style to bold
+                detained.setForeground(Color.RED);
+                
+                totalMarksLabel.setText("");
                 gradeLabel.setText("");
             } else {
                 // Adjust SEE marks if it falls in the range 38-39
@@ -215,6 +231,7 @@ class GUI extends JFrame {
         seeField.setText("");
         totalMarksLabel.setText("Total Marks: ");
         gradeLabel.setText("Grade: ");
+        detained.setText(null);
     }
 }
 
